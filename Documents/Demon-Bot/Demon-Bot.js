@@ -4,11 +4,11 @@ const settings = require('./settings.json');
 const prefix = settings.prefix;
 const ms = require("ms");
 const fs = require('fs');
-let warns = JSON.parse(fs.readFileSync("./warns.json", "utf8"));
+const warns = JSON.parse(fs.readFileSync("./warns.json", "utf8"));
 
 bot.on('ready', () => {
   bot.user.setStatus("idle");
-  bot.user.setActivity( "!help | residing on " + bot.guilds.size + " servers ");
+  bot.user.setActivity(settings.prefix + "help | residing on " + bot.guilds.size + " servers ");
     console.log("The Demon Is On");
     bot.channels.get("459850809002164234").send("Bot is now online!");
 });
@@ -123,19 +123,18 @@ bot.on('message', async message => {
      message.channel.send(embed);
   }
   if (command === "warn") {
-	  if (user == message.author) message.channel.send("Don't warn yourself, mention someone");
+	  if (user == message.author) return message.channel.send("Don't warn yourself, mention someone");
 	  let UnusedVariable = args.shift();
 	  let reason = args.join(" ");
 	  message.channel.send("User has been warned");
-	  warns[user.id] = {
-		  "reason": reason,
-		  "GiverID": message.author.id,
-		  "count": WarningCount(user.id),
-	  };
+	  if (!warns.hasOwnProperty(user.id)) {
+	  	warns[user.id] = [reason];
+	  } else {
+		  warns[user.id].push(reason);
+	  }
 	  fs.writeFile("./warns.json", JSON.stringify(warns), (err) => {
                 if (err) console.log(err)
 				 });
-  } //This part is unfinished but I had to go. It only lacks proper saving in the warns.json file. I'll finish ASAP
-  });
-
+  }
+	});
 bot.login(settings.token);
