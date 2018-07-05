@@ -135,7 +135,7 @@ bot.on('message', async message => {
 	  fs.writeFile("./warns.json", JSON.stringify(warns), (err) => {
                 if (err) console.log(err)
 				 });
-  }
+  } //This part is unfinished but I had to go. It only lacks proper saving in the warns.json file. I'll finish ASAP
   });
 
 bot.login(settings.token);
