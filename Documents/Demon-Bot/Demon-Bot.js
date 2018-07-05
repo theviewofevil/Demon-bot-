@@ -1,20 +1,23 @@
 const Discord = require('discord.js');
 const bot = new Discord.Client();
 const settings = require('./settings.json');
-const prefix = '!';
+const prefix = settings.prefix;
 const ms = require("ms");
+const fs = require('fs');
+let warns = JSON.parse(fs.readFileSync("./warns.json", "utf8"));
+
 bot.on('ready', () => {
   bot.user.setStatus("idle");
   bot.user.setActivity( "!help | residing on " + bot.guilds.size + " servers ");
     console.log("The Demon Is On");
     bot.channels.get("459850809002164234").send("Bot is now online!");
 });
- 
+
 bot.on('message', async message => {
   const args = message.content.slice(prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
   if (message.author.bot || !message.guild || !message.content.startsWith(prefix)) return;
-  
+
 
  let user = message.mentions.users.first();
   if (!user) {
@@ -36,7 +39,7 @@ bot.on('message', async message => {
       message.channel.send({ embed })
   }
 
-  if (message.content.startsWith('eval\n```js\n') && message.member.roles.has("369977467227734016")) {
+  if (message.content.startsWith('eval\n```js\n') && message.author.id == settings.owner) {
     var code = message.content.split("eval\n```js\n")[1];
     var code = code.split("\n```")[0];
     try {
@@ -59,11 +62,11 @@ bot.on('message', async message => {
       } else if (e instanceof InternalError) {
         message.channel.send(error)
       } else {
-        console.log("Unhandled Error : IDFK!!! Killing myself to be safe!");          
+        console.log("Unhandled Error : IDFK!!! Killing myself to be safe!");
         process.exit(1);
       }
     }
-  }//This is added by Juny
+  }	//This is added by Juny
 
   if (command === `help`) {
     let embed = new Discord.RichEmbed()
@@ -90,7 +93,7 @@ bot.on('message', async message => {
         .addField('Triggered by', `${message.author.username}`)
         .addField('is available',`${message.guild.available}`)
         .addField('created at',`${message.guild.createdAt}`);
-      message.channel.send({ embed });
+      message.channel.send(embed);
     }
      if (command === `botinfo`) {
        let embed = new Discord.RichEmbed()
@@ -101,22 +104,37 @@ bot.on('message', async message => {
          .addField('Total Guilds', bot.guilds.size.toLocaleString(), true)
          .addField('Total Users', bot.users.size.toLocaleString(), true)
          .addField('Ready At', bot.readyAt.toLocaleString(), true)
-         .addField('Uptime' , `${bot.uptime}`)  
+         .addField('Uptime' , `${bot.uptime}`)
          .addField('Heart Beat', bot.ping.toLocaleString(), true);
          message.channel.send({ embed });
      }
      if (command === 'shutdown') {
-      if(message.author.id != 311954616503762946) return message.channel.send("you can\'t use this!");
+      if(message.author.id != settings.owner) return message.channel.send("you can't use this!");
+		console.log(user.username + " shut down the bot"); //Logs to the console window who shut down the bot
       message.channel.send('Shutting Down!');
       bot.destroy();
-  
+
   }
-  if (command === `uptime`) { 
+  if (command === `Uptime`) {
     let embed  = new Discord.RichEmbed()
     .setTitle('uptime')
     .setColor('#ba0505')
-    .addField('var ms = require("ms"); ')
-     message.channel.send(ms(bot.uptime));
+    .setDescription(ms(bot.uptime));
+     message.channel.send(embed);
+  }
+  if (command === "warn") {
+	  if (user == message.author) message.channel.send("Don't warn yourself, mention someone");
+	  let UnusedVariable = args.shift();
+	  let reason = args.join(" ");
+	  message.channel.send("User has been warned");
+	  warns[user.id] = {
+		  "reason": reason,
+		  "GiverID": message.author.id,
+		  "count": WarningCount(user.id),
+	  };
+	  fs.writeFile("./warns.json", JSON.stringify(warns), (err) => {
+                if (err) console.log(err)
+				 });
   }
   });
 
