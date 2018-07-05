@@ -131,7 +131,7 @@ bot.on('message', async message => {
 	  	warns[user.id] = [reason];
 	  } else {
 		  warns[user.id].push(reason);
-	  }
+	  } //sets the reason and adds new but doesn't do anything more. Doesn't save the amount or the giver's ID.
 	  fs.writeFile("./warns.json", JSON.stringify(warns), (err) => {
                 if (err) console.log(err)
 				 });
