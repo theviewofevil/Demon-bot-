@@ -125,14 +125,23 @@ bot.on('message', async message => {
 		let UnusedVariable = args.shift();
 		let reason = args.join(" ");
 		message.channel.send("User has been warned");
+		let personId = warns[user.id];
 		if (!warns.hasOwnProperty(user.id)) {
-			warns[user.id] = [reason];
+			warns[user.id] = {
+				reasons: [reason],
+				giverIDs: [message.author.id],
+				giverNames: [message.author.username],
+				amount: 1,
+			};
 		} else {
-			warns[user.id].push(reason);
-		} //sets the reason and adds new but doesn't do anything more. Doesn't save the amount or the giver's ID.
+			personId["reasons"].push(reason);
+			personId["giverIDs"].push(message.author.id);
+			personId["giverNames"].push(message.author.username);
+			personId["amount"]++;
+		}
 		fs.writeFile("./warns.json", JSON.stringify(warns), (err) => {
-								if (err) console.log(err)
-				 });
+			if (err) console.log(err)
+		});
 	}
 	});
 bot.login(settings.token);
