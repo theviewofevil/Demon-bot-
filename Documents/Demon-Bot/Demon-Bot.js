@@ -39,32 +39,33 @@ bot.on('message', async message => {
 			message.channel.send({ embed })
 	}
 
-	if (message.content.startsWith('eval\n```js\n') && message.author.id == settings.owner) {
+	if (message.content.startsWith(prefix + 'eval\n```js\n') && message.author.id == settings.owner) {
 		var code = message.content.split("eval\n```js\n")[1];
 		var code = code.split("\n```")[0];
 		try {
-			message.channel.send("Trying it...");
-			eval(code);
+		  message.channel.send("Trying it...");
+		  eval(code);
 		} catch (e) {
-			var error = "Error Name : **" + e.name + "**\nError Message : **" + e.message + "**";
-			if (e instanceof EvalError) {
-				message.channel.send(error)
-			} else if (e instanceof SyntaxError) {
-				message.channel.send(error)
-			} else if (e instanceof TypeError) {
-				message.channel.send(error)
-			} else if (e instanceof ReferenceError) {
-				message.channel.send(error)
-			} else if (e instanceof URIError) {
-				message.channel.send(error)
-			} else if (e instanceof RangeError) {
-				message.channel.send(error)
-			} else if (e instanceof InternalError) {
-				message.channel.send(error)
-			} else {
-				console.log("Unhandled Error : IDFK!!! Killing myself to be safe!");
-				process.exit(666);
-			}
+		  var error = "Error Name : **" + e.name + "**\nError Message : **" + e.message + "**";
+		  if (e instanceof EvalError) {
+			message.channel.send(error)
+		  } else if (e instanceof SyntaxError) {
+			message.channel.send(error)
+		  } else if (e instanceof TypeError) {
+			message.channel.send(error)
+		  } else if (e instanceof ReferenceError) {
+			message.channel.send(error)
+		  } else if (e instanceof URIError) {
+			message.channel.send(error)
+		  } else if (e instanceof RangeError) {
+			message.channel.send(error)
+		  } else if (e instanceof InternalError) {
+			message.channel.send(error)
+		  } else {
+			message.channel.send("Failed")
+			console.log("Unhandled Error : IDFK!!! Killing myself to be safe!");          
+			process.exit(1);
+		  }
 		}
 	}	//This is added by Juny
 
