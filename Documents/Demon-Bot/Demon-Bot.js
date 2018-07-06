@@ -63,7 +63,7 @@ bot.on('message', async message => {
 				message.channel.send(error)
 			} else {
 				console.log("Unhandled Error : IDFK!!! Killing myself to be safe!");
-				process.exit(1);
+				process.exit(666);
 			}
 		}
 	}	//This is added by Juny
@@ -71,11 +71,12 @@ bot.on('message', async message => {
 	if (command === `help`) {
 		let embed = new Discord.RichEmbed()
 			.setTitle('Help')
-			.addField('!help', '``gives you this current information``')
+			.addField('help', '``gives you this current information``')
 			.setColor('#ba0505')
-			.addField('!userinfo','``gives you info about a user``')
-			.addField('!serverinfo','``gives you info about a server``')
-			.addField('!botinfo','``gives you information on the bot``')
+			.addField('userinfo','``gives you info about a user``')
+			.addField('serverinfo','``gives you info about a server``')
+			.addField('botinfo','``gives you information on the bot``')
+			.addField("warn","``Warns a person``" )
 			.addField('invite link for bot','https://discordapp.com/api/oauth2/authorize?client_id=449983742224760853&permissions=84993&scope=bot'  );
 			 message.channel.send({ embed });
 	}
@@ -143,5 +144,13 @@ bot.on('message', async message => {
 			if (err) console.log(err)
 		});
 	}
+	if (command === "warnings") {
+		message.channel.send("Here are warnings for " + user.username + "#" + user.discriminator);
+		message.channel.send
+	}
 	});
-bot.login(settings.token);
+bot.login(settings.token).catch((error) =>{
+	console.log("Could't log in. Error while connecting");
+	console.log( "Error Name: " + error.name + "\nError Message: " + error.message);
+	process.exit(1);
+});
