@@ -139,7 +139,7 @@ bot.on('message', async message => {
 			personId["giverNames"].push(message.author.username);
 			personId["amount"]++;
 		}
-		fs.writeFile("./warns.json", JSON.stringify(warns), (err) => {
+		fs.writeFile("./warns.json", JSON.stringify(warns, null, 4), (err) => {
 			if (err) console.log(err)
 		});
 	}
