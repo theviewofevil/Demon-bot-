@@ -123,28 +123,39 @@ bot.on('message', async message => {
 		if (user == message.author) return message.channel.send("Don't warn yourself, mention someone");
 		let UnusedVariable = args.shift();
 		let reason = args.join(" ");
+		if (reason != "") {
 		message.channel.send("User has been warned");
-		let personId = warns[user.id];
-		if (!warns.hasOwnProperty(user.id)) {
-			warns[user.id] = {
-				reasons: [reason],
-				giverIDs: [message.author.id],
-				giverNames: [message.author.username],
-				amount: 1,
-			};
+			let personId = warns[user.id];
+			if (!warns.hasOwnProperty(user.id)) {
+				reason = "\n" + reason;
+				warns[user.id] = {
+					reasons: [reason],
+					giverIDs: [message.author.id],
+					giverNames: [message.author.username],
+					amount: 1,
+				};
+			} else {
+				reason = "\n" + reason;
+				personId["reasons"].push(reason);
+				personId["giverIDs"].push(message.author.id);
+				personId["giverNames"].push(message.author.username);
+				personId["amount"]++;
+			}
+			fs.writeFile("./warns.json", JSON.stringify(warns, null, 4), (err) => {
+				if (err) console.log(err)
+			});
 		} else {
-			personId["reasons"].push(reason);
-			personId["giverIDs"].push(message.author.id);
-			personId["giverNames"].push(message.author.username);
-			personId["amount"]++;
+			message.channel.send("You need to provide a reason");
 		}
-		fs.writeFile("./warns.json", JSON.stringify(warns, null, 4), (err) => {
-			if (err) console.log(err)
-		});
 	}
 	if (command === "warnings") {
-		message.channel.send("Here are warnings for " + user.username + "#" + user.discriminator);
-		message.channel.send
+		let personId = warns[user.id];
+		if (warns.hasOwnProperty(user.id)) {
+			message.channel.send("Here are warnings for " + user.username + "#" + user.discriminator);
+			message.channel.send("```" + personId.reasons + "\n```");
+		} else { 
+			message.channel.send("User hasn't been warned. *Yet.*");
+		}
 	}
 	});
 bot.login(settings.token).catch((error) =>{
