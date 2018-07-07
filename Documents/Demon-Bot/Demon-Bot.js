@@ -11,6 +11,7 @@ bot.on('ready', () => {
 	bot.user.setActivity(settings.prefix + "help | residing on " + bot.guilds.size + " servers ");
 		console.log("The Demon Is On");
 		bot.channels.get("459850809002164234").send("Bot is now online!");
+		
 });
 
 bot.on('message', async message => {
@@ -40,7 +41,7 @@ bot.on('message', async message => {
 	}
 
 	if (message.content.startsWith(prefix + 'eval\n```js\n') && message.author.id == settings.owner) {
-		var code = message.content.split("eval\n```js\n")[1];
+		var code = message.content.split(prefix + "eval\n```js\n")[1];
 		var code = code.split("\n```")[0];
 		try {
 		  message.channel.send("Trying it...");
@@ -116,11 +117,7 @@ bot.on('message', async message => {
 
 	}
 	if (command === `Uptime`) {
-		let embed  = new Discord.RichEmbed()
-		.setTitle('uptime')
-		.setColor('#ba0505')
-		.setDescription(ms(bot.uptime));
-		 message.channel.send(embed);
+		 message.channel.send(ms(bot.uptime));
 	}
 	if (command === "warn") {
 		if (user == message.author) return message.channel.send("Don't warn yourself, mention someone");
