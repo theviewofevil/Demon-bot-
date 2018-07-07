@@ -101,7 +101,7 @@ bot.on('message', async message => {
 				 .setColor('#ba0505')
 				 .setTitle('Bot Information')
 				 .setThumbnail('https://images-ext-1.discordapp.net/external/LJoYMoWmRfbdNbtP4JBj322JeG3S4X4QyR_hpX0QA54/%3Fsize%3D2048/https/cdn.discordapp.com/avatars/449983742224760853/88a6fe289c46630341310ca8a6968fe4.png?width=423&height=423')
-				 .addField('Bot Owner', `Luci#0666`)
+				 .addField('Bot Owner', "Luci#0666 \nadamski234#6369")
 				 .addField('Total Guilds', bot.guilds.size.toLocaleString(), true)
 				 .addField('Total Users', bot.users.size.toLocaleString(), true)
 				 .addField('Ready At', bot.readyAt.toLocaleString(), true)
