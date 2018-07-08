@@ -11,7 +11,7 @@ bot.on('ready', () => {
 	bot.user.setActivity(settings.prefix + "help | residing on " + bot.guilds.size + " servers ");
 		console.log("The Demon Is On");
 		bot.channels.get("459850809002164234").send("Bot is now online!");
-		
+
 });
 
 bot.on('message', async message => {
@@ -64,7 +64,7 @@ bot.on('message', async message => {
 			message.channel.send(error)
 		  } else {
 			message.channel.send("Failed")
-			console.log("Unhandled Error : IDFK!!! Killing myself to be safe!");          
+			console.log("Unhandled Error : IDFK!!! Killing myself to be safe!");
 			process.exit(1);
 		  }
 		}
@@ -111,7 +111,7 @@ bot.on('message', async message => {
 		 }
 		 if (command === 'shutdown') {
 			if(message.author.id != settings.owner) return message.channel.send("you can't use this!");
-		console.log(user.username + " shut down the bot"); //Logs to the console window who shut down the bot
+			console.log(user.username + " shut down the bot"); //Logs to the console window who shut down the bot
 			message.channel.send('Shutting Down!');
 			bot.destroy();
 
@@ -121,8 +121,9 @@ bot.on('message', async message => {
 	}
 	if (command === "warn") {
 		if (user == message.author) return message.channel.send("Don't warn yourself, mention someone");
-		let UnusedVariable = args.shift();
-		let reason = args.join(" ");
+		let index = args.indexOf("<@!" + /([0-9]{18})/ + ">");
+		argument = args.splice(index, 1);
+		let reason = argument.join(" ");
 		if (reason != "") {
 		message.channel.send("User has been warned");
 			let personId = warns[user.id];
@@ -153,9 +154,34 @@ bot.on('message', async message => {
 		if (warns.hasOwnProperty(user.id)) {
 			message.channel.send("Here are warnings for " + user.username + "#" + user.discriminator);
 			message.channel.send("```" + personId.reasons + "\n```");
-		} else { 
+		} else {
 			message.channel.send("User hasn't been warned. *Yet.*");
 		}
+	}
+	if (command === "delwarn") {
+		if (user == message.author) return message.channel.send("You can't delete your own warnings");
+		let index = args.indexOf("<@!" + /([0-9]{18})/ + ">");
+		args.splice(index, 1);
+		let personId = warns[user.id];
+		if (args == "") {
+			personId.reasons = [];
+			personId.giverIDs = [];
+			personId.giverNames = [];
+			personId.amount = 0;
+			message.channel.send("Removed all warnings for " + user.username); //Works good till here
+		} else if (args[0] > personId.amount) {
+			message.channel.send("That user doesn't have that many warnings, chill");
+		} else {
+			let number = args[0] + 1;
+			personId.reasons.splice(number, 1);
+			personId.giverIDs.splice(number, 1);
+			personId.giverNames.splice(number, 1);
+			personId.amount--;
+			message.channel.send("Deleted warning with number `" + number + "`");
+		}
+		fs.writeFile("./warns.json", JSON.stringify(warns, null, 4), (err) => {
+			if (err) console.log(err)
+		});
 	}
 	});
 bot.login(settings.token).catch((error) =>{
