@@ -10,5 +10,80 @@
             "adamski234"
         ],
         "amount": 1
+    },
+    "449983742224760853": {
+        "reasons": [
+            "blah",
+            "",
+            "\ntest"
+        ],
+        "giverIDs": [
+            "401477264149053441",
+            "401477264149053441",
+            "311954616503762946"
+        ],
+        "giverNames": [
+            "adamski234",
+            "adamski234",
+            "Luci"
+        ],
+        "amount": 3
+    },
+    "401477264149053441": {
+        "reasons": [
+            "being silly"
+        ],
+        "giverIDs": [
+            "311954616503762946"
+        ],
+        "giverNames": [
+            "Luci"
+        ],
+        "amount": 1
+    },
+    "342048213143912449": {
+        "reasons": [
+            "being silly",
+            "for laughing",
+            "for abusing the command"
+        ],
+        "giverIDs": [
+            "311954616503762946",
+            "311954616503762946",
+            "311954616503762946"
+        ],
+        "giverNames": [
+            "Luci",
+            "Luci",
+            "Luci"
+        ],
+        "amount": 3
+    },
+    "311954616503762946": {
+        "reasons": [
+            "for not meaning it",
+            "\nhuehuehue"
+        ],
+        "giverIDs": [
+            "342048213143912449",
+            "401477264149053441"
+        ],
+        "giverNames": [
+            "Beggs and Eacon",
+            "adamski234"
+        ],
+        "amount": 2
+    },
+    "182597070471954433": {
+        "reasons": [
+            "\njust because lol"
+        ],
+        "giverIDs": [
+            "311954616503762946"
+        ],
+        "giverNames": [
+            "Luci"
+        ],
+        "amount": 1
     }
 }
