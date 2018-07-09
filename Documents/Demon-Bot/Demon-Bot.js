@@ -176,6 +176,31 @@ bot.on('message', async message => {
       message.channel.send("User hasn't been warned. *Yet.*");
     }
   }
+  if (command === "delwarn") {
+		if (user == message.author) return message.channel.send("You can't delete your own warnings");
+		let index = args.indexOf("<@!" + /([0-9]{18})/ + ">");
+		args.splice(index, 1);
+		let personId = warns[user.id];
+		if (args == "") {
+			personId.reasons = [];
+			personId.giverIDs = [];
+			personId.giverNames = [];
+			personId.amount = 0;
+			message.channel.send("Removed all warnings for " + user.username); //Works good till here
+		} else if (args[0] > personId.amount) {
+			message.channel.send("That user doesn't have that many warnings, chill");
+		} else {
+			let number = args[0] + 1;
+			personId.reasons.splice(number, 1);
+			personId.giverIDs.splice(number, 1);
+			personId.giverNames.splice(number, 1);
+			personId.amount--;
+			message.channel.send("Deleted warning with number `" + number + "`");
+		}
+		fs.writeFile("./warns.json", JSON.stringify(warns, null, 4), (err) => {
+			if (err) console.log(err)
+		});
+	}
   if (command === "eval") {
       if (message.author.id !== settings.owner) return;
       console.log("ran eval");
