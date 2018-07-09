@@ -1,14 +1,8 @@
 {
     "463731892458618882": {
-        "reasons": [
-            "test"
-        ],
-        "giverIDs": [
-            "401477264149053441"
-        ],
-        "giverNames": [
-            "adamski234"
-        ],
-        "amount": 1
+        "reasons": [],
+        "giverIDs": [],
+        "giverNames": [],
+        "amount": 0
     }
 }
